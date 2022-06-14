@@ -8,5 +8,9 @@ g++ app.cpp -o app.exe -I glm
 ```
 and then execute it with
 ```
+app
+```
+or alrernatively, if that does something else by default:
+```
 ./app.exe
 ```

@@ -51,8 +51,13 @@ int APowerBModuloC(long long a, unsigned int b, int c) {
 
 size_t QuadraticSieve(size_t N) {
     size_t Bmax = primes[sizeof(primes)/sizeof(primes[0])-1]; // the highest prime we have stored
-    // Some for the fastest value of B
+    // Choose a value for B. This is an approximation for a good value
     size_t B = min( (size_t)round(pow(exp(sqrt(log(N)*log(log(N)))), one_over_root_two<size_t>())), Bmax );
+    if (B < 10) {
+        B = 11;
+        std::cout << "We need to rethink B. Let's set it to " << B << std::endl;
+    }
+
     size_t amountOfPrimesUpToB = FindPositionInPrimes(B);
 
     // We start checking values from the square root. That gives us a higher change that the square is B-smooth
@@ -83,7 +88,7 @@ size_t QuadraticSieve(size_t N) {
         // Sieve the number
         size_t remainder = guess * guess % N;
         for (int i = 0; i < primesToCheck.size(); i++) {
-            if (remainder % primesToCheck[i] == 0) {
+            while (remainder % primesToCheck[i] == 0) {
                 remainder /= primesToCheck[i];
                 exponentArray[i] = (exponentArray[i] + 1) % 2; // In the end we want all exponents to be even, so we can get away with mod 2
 
@@ -100,7 +105,7 @@ size_t QuadraticSieve(size_t N) {
     }
 
     // TODO:
-    // We have an exponent array, find some combination of exponents that gets every exponent even
+    // We have the exponents, find some combination of exponents that gets every exponent even
     // Use those exponents to calculate factors
     // If the factor is not one of the trivial factors (1, N), return it
 
@@ -118,7 +123,10 @@ int main() {
     std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
     double milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count();
     
-    std::cout << "Got " << QuadraticSieve(factor1 * factor2) << " in " << milliseconds / 1000 << " seconds." << std::endl;
+    std::cout << "Got " << ans << " in " << milliseconds / 1000 << " seconds." << std::endl;
+    
+    std::string buf;
+    std::cin >> buf;
 
     return 0;
 }

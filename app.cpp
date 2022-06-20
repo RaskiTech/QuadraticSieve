@@ -45,6 +45,175 @@ int APowerBModuloC(long long a, unsigned int b, int c) {
     return res;
 }
 
+class SolveSystemOfLinearEquations {
+    // Some gaussian elimination i think???
+    static void Preprocess(std::vector<std::vector<uint8_t>>& mat) {
+        int h = mat.size(); // Height
+        int w = mat[0].size(); // Width
+
+        // We know we want in the end all of them to be 0, so we don't care about keeping track of the answer
+        for (int cIndex = 0, rIndex = 0; cIndex < w; cIndex++, rIndex++) {
+            if (rIndex > h - 1) {
+                std::cout << "Ran out of rows. Would need more rows." << std::endl;
+                break;
+            }
+
+            if (mat[rIndex][cIndex] == 0) {
+                // Look down and hopefully find a 1
+                for (int c = rIndex + 1; c < h; c++) {
+                    if (mat[c][cIndex] == 1) {
+                        std::swap(mat[rIndex], mat[c]);
+                        break;
+                    }
+                }
+                // If we didn't find a 1 in that column
+                if (mat[rIndex][cIndex] == 0) {
+                    std::cout << "We didn't find a 1.";
+                    // Continue without incrementing row index
+                    rIndex--;
+                    continue;
+                }
+            }
+            for (int c = rIndex + 1; c < h; c++) {
+                if (mat[c][rIndex] == 1) {
+                    // Add row at index to row c
+                    for (int r = 0; r < w; r++)
+                        mat[c][r] = (mat[rIndex][r] + mat[c][r]) % 2;
+                }
+            }
+        }
+    }
+
+    // Function to handle changing amount of nested iteration
+    static void IterateInBruteForce(std::vector<uint8_t>& idxVec, int deepness, int startValue, int maxIterValue, 
+        const std::vector<std::vector<uint8_t>>& originalMat, std::vector<std::vector<uint8_t>>& mat, std::vector<uint8_t>& ans, std::vector<uint8_t>& outSolved, int& workRow, const std::vector<uint8_t>& indicies)
+    {
+        for (idxVec[deepness] = startValue; idxVec[deepness] < maxIterValue; idxVec[deepness]++) {
+            if (deepness != 0 && idxVec[deepness] == idxVec[deepness - 1])
+                continue;
+            if (deepness == idxVec.size() - 1) {
+                // This code block will run for every combination of vec, where vec[i-1] < vec[i] < indicies.size()
+                // vec will be the 1's to the array indicies
+
+
+                // Update all the columns
+                int next1sIndex = 0;
+                for (int i = 0; i < indicies.size(); i++) {
+                    int column = indicies[i];
+
+                    // Is this a 1 or a 0 this iteration?
+                    if (idxVec[next1sIndex] == i) {
+                        next1sIndex++;
+                        // It's a 1
+                        for (int r = workRow - 1; r > -1; r--) {
+                            if (mat[r][column ] == 1)
+                                ans[r] = (ans[r] + 1) % 2;
+                            mat[r][column] = 0;
+                        }
+						outSolved[column] = 1;
+                    }
+                    else {
+                        for (int r = workRow - 1; r > -1; r--)
+                            mat[r][column] = 0;
+                        outSolved[column] = 0;
+                    }
+                }
+
+                // Solve the next row, unless this is the last
+                if (workRow == 0) {
+                    for (int i = 0; i < outSolved.size(); i++)
+                        std::cout << " " << (int)outSolved[i];
+                    std::cout << std::endl;
+                }
+                else BruteForce(originalMat, mat, ans, outSolved, workRow - 1);
+
+                // Set all back for next time
+                for (int i = 0; i < indicies.size(); i++) {
+                    int column = indicies[i];
+
+                    for (int r = workRow - 1; r > -1; r--)
+                        mat[r][column] = originalMat[r][column];
+                }
+            }
+            else IterateInBruteForce(idxVec, deepness + 1, idxVec[deepness], maxIterValue, originalMat, mat, ans, outSolved, workRow, indicies);
+        }
+    }
+
+    static void BruteForce(const std::vector<std::vector<uint8_t>>& originalMat, std::vector<std::vector<uint8_t>>& mat, std::vector<uint8_t>& ans, std::vector<uint8_t>& outSolved, int workRow) {
+        bool rowEmpty = true;
+
+		// Find the variables to set
+		auto indicies = std::vector<uint8_t>();
+		for (int c = 0; c < mat[workRow].size(); c++) {
+            if (mat[workRow][c] == 1) {
+                rowEmpty = false;
+				indicies.push_back(c);
+            }
+		}
+
+		// Because of the mod 2, we can add 2 1s and nothing will change
+		for (int amountOf1s = ans[workRow]; amountOf1s <= indicies.size(); amountOf1s += 2) {
+            if (amountOf1s == 0) {
+
+                // Update all the columns
+                for (int i = 0; i < indicies.size(); i++) {
+                    int column = indicies[i];
+
+                    for (int r = workRow - 1; r > -1; r--)
+                        mat[r][column] = 0;
+                    outSolved[column] = 0;
+                }
+
+                if (workRow == 0) {
+                    for (int i = 0; i < outSolved.size(); i++)
+                        std::cout << " " << (int)outSolved[i];
+                    std::cout << std::endl;
+                }
+                else
+					// Solve the next row
+					BruteForce(originalMat, mat, ans, outSolved, workRow - 1);
+
+                // Set all back
+                for (int i = 0; i < indicies.size(); i++) {
+                    int column = indicies[i];
+
+                    for (int r = workRow - 1; r > -1; r--)
+                        mat[r][column] = originalMat[r][column];
+                    outSolved[column] = (uint8_t)-1;
+                }
+            }
+            else {
+				std::vector<uint8_t> vec = std::vector<uint8_t>(amountOf1s);
+				IterateInBruteForce(vec, 0, 0, indicies.size(), originalMat, mat, ans, outSolved, workRow, indicies);
+            }
+		}
+    }
+
+public:
+    static void Solve(std::vector<std::vector<uint8_t>>& mat) {
+        int h = mat.size(); // Height
+        int w = mat[0].size(); // Width
+
+        Preprocess(mat);
+
+		std::cout << "\n\n";
+		for (int i = 0; i < mat.size(); i++) {
+			for (int j = 0; j < mat[0].size(); j++)
+				std::cout << (int)mat[i][j];
+			std::cout << std::endl;
+		}
+		std::cout << std::endl;
+
+		std::vector<uint8_t> ans = std::vector<uint8_t>(mat[0].size(), (uint8_t)-1);
+		auto referenceMat = mat;
+
+		// Solve the matrix using brute force. Because of the preprocessing, this shouldn't be so bad
+		auto tmp = std::vector<uint8_t>(h, 0);
+        int workRow = h - 1;
+		BruteForce(referenceMat, mat, tmp, ans, workRow);
+    }
+};
+
 ///////////////////////////////////////////////////
 ///////////////// The algorithm ///////////////////
 ///////////////////////////////////////////////////
@@ -79,11 +248,11 @@ size_t QuadraticSieve(size_t N) {
 
     // Find some amount of numbers whose square mod N is B-smooth
     std::vector<size_t> squaredModNBSmoothNumbers;
-    std::vector<std::vector<size_t>> factorExponents;
+    std::vector<std::vector<uint8_t>> factorExponents;
     squaredModNBSmoothNumbers.reserve(amountOfBSmoothNumbers);
     factorExponents.reserve(amountOfBSmoothNumbers);
     while (squaredModNBSmoothNumbers.size() < amountOfBSmoothNumbers) {
-        std::vector<size_t> exponentArray = std::vector<size_t>(primesToCheck.size(), 0); // Initialize all the exponent amounts to 0
+        std::vector<uint8_t> exponentArray = std::vector<uint8_t>(primesToCheck.size(), 0); // Initialize all the exponent amounts to 0
 
         // Sieve the number
         size_t remainder = guess * guess % N;
@@ -112,7 +281,27 @@ size_t QuadraticSieve(size_t N) {
     return -1;
 }
 
+
+
+
+
+void Test() {
+
+    // The following is an example. Every column is an exponent vector, and thus every row shows what exponent vectors contribute to that exponent
+    // TODO: Flip this algorithm across the y=x axis. Make it take a vector of exponents instead of a vector of exponent contributions
+    auto equations = std::vector<std::vector<uint8_t>>();
+    equations.push_back(std::vector<uint8_t>{ 1, 0, 1, 1 });
+    equations.push_back(std::vector<uint8_t>{ 1, 1, 0, 0 });
+    equations.push_back(std::vector<uint8_t>{ 0, 1, 0, 1 });
+    equations.push_back(std::vector<uint8_t>{ 0, 1, 0, 1 });
+    equations.push_back(std::vector<uint8_t>{ 0, 1, 0, 1 });
+
+    SolveSystemOfLinearEquations::Solve(equations);
+}
+
 int main() {
+    Test();
+
     size_t factor1 = 53;
     size_t factor2 = 59;
 

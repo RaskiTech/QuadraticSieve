@@ -46,11 +46,14 @@ const int primes[] = {
 ///////////////////////////////////////////////////
 /////////////// Utility functions /////////////////
 ///////////////////////////////////////////////////
-
-size_t gcd(size_t a, size_t b) {
-   if (b == 0)
-   return a;
-   return gcd(b, a % b);
+size_t gcd(size_t a,size_t b) {
+  size_t R = a % b;
+  while (R > 0)  {
+    a = b;
+    b = R;
+    R = a % b
+  }
+  return b;
 }
 
 // Binary search
@@ -85,24 +88,17 @@ int APowerBModuloC(long long a, unsigned int b, int c) {
 
 class SolveSystemOfLinearEquations {
     // Answerarray should already be initialized with the chosen variables
-    static uint8_t InsertAnswerIntoArray(const int& rowIndex, const std::vector<std::vector<uint8_t>>& mat, const std::vector<std::vector<int>>& onesByColumn, std::vector<uint8_t>& answerArray) {
+    static uint8_t InsertAnswerIntoArray(const int& rowIndex, const std::vector<std::vector<uint8_t>>& mat, const std::vector<int>& first1ByRow, const std::vector<std::vector<int>>& onesByColumn, std::vector<uint8_t>& answerArray) {
         if (answerArray[rowIndex] != (uint8_t)-1)
             return answerArray[rowIndex];
 
         // Find the first 1 in that row
-        int first1Column = 0;
-        for (int i = 0; i < mat[rowIndex].size(); i++)
-            if (mat[rowIndex][i] == 1) {
-                first1Column = i;
-                break;
-            }
+        int first1Column = first1ByRow[rowIndex];
 
-        // Calculate do we need this
-        
         answerArray[rowIndex] = 0;
 
         for (int i = 0; i < onesByColumn[first1Column].size(); i++) {
-            answerArray[rowIndex] = (answerArray[rowIndex] + InsertAnswerIntoArray(onesByColumn[first1Column][i], mat, onesByColumn, answerArray)) % 2;
+            answerArray[rowIndex] ^= InsertAnswerIntoArray(onesByColumn[first1Column][i], mat, first1ByRow, onesByColumn, answerArray);
         }
 
         return answerArray[rowIndex];
@@ -159,7 +155,6 @@ public:
 						cIndex++;
                     }
 					freeVariableIndices.push_back(rIndex);
-                    //if (freeVariableIndices.size() == 0 || freeVariableIndices[freeVariableIndices.size()-1] != rIndex)
                     continue;
                 }
             }
@@ -188,6 +183,7 @@ public:
         */
 
         // Go through the array and get all the indicies of 1's
+        std::vector<int> first1ByRow = std::vector<int>(h, -1);
         std::vector<std::vector<int>> onesByColumn = std::vector<std::vector<int>>();
         for (int i = 0; i < w; i++) {
             onesByColumn.push_back(std::vector<int>());
@@ -196,6 +192,7 @@ public:
                 if (mat[j][i] == 1) {
                     if (!seenFirst1) {
                         seenFirst1 = true;
+                        first1ByRow[j] = i;
                         continue;
                     }
                     onesByColumn[i].push_back(j);
@@ -229,7 +226,7 @@ public:
 
             // Solve this answer
 			for (int i = 0; i < freeVariableIndices[lastBitChanged - 1] + 1; i++)
-				InsertAnswerIntoArray(i, mat, onesByColumn, ans);
+				InsertAnswerIntoArray(i, mat, first1ByRow, onesByColumn, ans);
 
             if (!CheckValidAnswer(ans))
                 break;
@@ -266,7 +263,7 @@ size_t QuadraticSieve(size_t N) {
 
     // We start checking values from the square root. That gives us a higher change that the square is B-smooth
     size_t guess = ceil(sqrt(N));
-    size_t amountOfBSmoothNumbers = primesToCheck.size() + 5;
+    size_t amountOfBSmoothNumbers = primesToCheck.size() * 1.3f;
 
     std::vector<size_t> squaredModNBSmoothNumbers;
     std::vector<std::vector<uint8_t>> factorExponents;
@@ -357,7 +354,7 @@ size_t QuadraticSieve(size_t N) {
 
 int main() {
 
-#if 1
+#if 0
     size_t factor1 = 3000061;
     size_t factor2 = 3000223;
     // 0.006s

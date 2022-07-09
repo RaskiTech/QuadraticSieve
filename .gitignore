@@ -1,2 +1,4 @@
 *.exe
 .vscode
+Video/media
+Video/__pycache__

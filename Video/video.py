@@ -1,4 +1,7 @@
+from math import ceil, sqrt
+import string
 from tkinter import font
+from tokenize import String
 from wsgiref.util import guess_scheme
 from manim import *
 from numpy import full
@@ -34,13 +37,95 @@ def HideTextbox(self, textbox) -> None:
 class CreateVideo(Scene):
     def construct(self):
         #StartExplanation(self)
+        SieveOfEratosthenesExplanation(self)
+        self.play(FadeOut(VGroup(*self.mobjects)))
         #FermatExplanation(self)
         #KratsKritsExplanation(self)
         #QuadraticSieveExplanation(self)
-        OptimizeExplanation(self)
+        #OptimizeExplanation(self)
 
 
 def StartExplanation(self):
+    pass
+
+def SieveOfEratosthenesExplanation(self):
+
+    header = Text("Sieve of Eratosthenes", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
+
+    self.play(Create(header))
+    self.play(FadeOut(header))
+
+    grid = []
+
+    for y in range(10):
+        row = []
+        for x in range(10):
+            cell_size = 0.7
+            box = Square(cell_size).move_to(UP*cell_size*(4.5-y)+LEFT*cell_size*(4.5-x))
+            text = Text(str(y*10+x + 1), font="Futura Md BT", font_size=16).move_to(box.get_center())
+            cell = VGroup(*[box,text])
+            row.append(cell)
+        grid.append(row)
+    
+    grid_group = VGroup()
+
+    for row in grid:
+        grid_group += VGroup(*row)
+
+    self.play(Create(grid_group))
+
+    all_crosses = VGroup()
+
+    def cross_out_multiples(n_list):
+        crosses = VGroup()
+        for n in n_list:
+            for y, row in enumerate(grid):
+                for x, cell in enumerate(row):
+                    number = y*10+x + 1
+                    if number % n == 0 and number != n :
+                        cross = Cross(cell)
+                        crosses += cross
+        self.play(Create(crosses))
+        return crosses
+    
+    all_crosses += cross_out_multiples([2])
+    all_crosses += cross_out_multiples([3])
+    all_crosses += cross_out_multiples([5])
+
+    def is_prime(n):
+        for i in range(2,n):
+            if (n%i) == 0:
+                return False
+        return True
+
+    def get_primes_in_range(start, stop):
+        ans = []
+        for n in range(start, stop):
+            if is_prime(n) :
+                ans.append(n)
+        return ans
+
+
+    all_crosses += cross_out_multiples(get_primes_in_range(7, 100 + 1))           
+
+    prime_cells = VGroup()
+    for y, row in enumerate(grid):
+        for x, cell in enumerate(row):
+            number = y*10+x + 1
+            if is_prime(number):
+                prime_cells += cell
+    
+    self.bring_to_front(prime_cells)
+    self.play(prime_cells.animate.set_color(ACCENT_COLOR))
+
+    self.play(FadeOut(grid_group), FadeOut(all_crosses))
+
+    text_1 = MathTex(r'N', font_size=60, color=ACCENT_COLOR)
+    text_2 = MathTex(r'\sqrt{N}', font_size=60, color=ACCENT_COLOR).next_to(text_1, DOWN)
+
+    self.play(Create(text_1))
+    self.play(Create(text_2))
+
     pass
 
 def FermatExplanation(self):

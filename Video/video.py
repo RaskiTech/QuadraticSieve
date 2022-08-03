@@ -220,11 +220,11 @@ def FermatExplanation(self):
     self.play(Transform(text_3_2_1, text_3_2_4))
     self.play(Transform(text_3_1, text_3_1_2))
 
-    self.play(FadeOut(VGroup(*self.mobjects)))
+    #self.play(FadeOut(VGroup(*self.mobjects)))
 
     ### EXAMPLE ###
 
-    
+
 
 
     pass

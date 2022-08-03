@@ -199,14 +199,32 @@ def FermatExplanation(self):
     self.play(Create(Mid))
     
     text_3_1 = MathTex(r'N=a\cdot b\wedge N\in\text{Odd}').move_to(UP*3)
+    text_3_1_2 = MathTex(r'N=(a+b)\cdot (a-b)\wedge N\in\text{Odd}').move_to(UP*3)
     text_3_2_1 = MathTex(r'N=(d+m)\cdot(d-m)').move_to(UP*2)
 
     text_3_2_2 = MathTex(r'N=d^2-m^2').move_to(text_3_2_1)
+    text_3_2_3 = MathTex(r'N+m^2=d^2').move_to(text_3_2_1)
+
+    text_3_2_3_2 = MathTex(r'N+m^2=d^2', font_size=60)
+
+    text_3_2_4 = MathTex(r'N+a^2=b^2', font_size=60)
 
     self.play(Create(text_3_1), Create(text_3_2_1))
     self.play(Transform(text_3_2_1, text_3_2_2))
+    self.play(Transform(text_3_2_1, text_3_2_3))
 
+    self.play(Uncreate(VGroup(Odd_1, Odd_2, Mid, numline)))
 
+    self.play(Transform(text_3_2_1, text_3_2_3_2))
+
+    self.play(Transform(text_3_2_1, text_3_2_4))
+    self.play(Transform(text_3_1, text_3_1_2))
+
+    self.play(FadeOut(VGroup(*self.mobjects)))
+
+    ### EXAMPLE ###
+
+    
 
 
     pass

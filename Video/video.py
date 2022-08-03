@@ -41,9 +41,10 @@ class CreateVideo(Scene):
         #StartExplanation(self)
         #SieveOfEratosthenesExplanation(self)
         #FermatExplanation(self)
-        #KratsKritsExplanation(self)
-        QuadraticSieveExplanation(self)
-        OptimizeExplanation(self)
+        #FermatExplanationExample(self)
+        KratsKritsExplanation(self)
+        #QuadraticSieveExplanation(self)
+        #OptimizeExplanation(self)
         pass
 
 
@@ -222,13 +223,119 @@ def FermatExplanation(self):
 
     #self.play(FadeOut(VGroup(*self.mobjects)))
 
-    ### EXAMPLE ###
 
+def FermatExplanationExample(self):
 
+    # 5063
+    
+    example_header = Text("Example", font="Futura Md BT", font_size=40).move_to(UP*3.4)
+    text_1 = Text("N = 5063", **TEXT_ARGS_S)
 
+    self.play(Create(example_header))
+    self.play(Create(text_1))
 
+    self.play(text_1.animate.to_edge(UP + LEFT))
+
+    STEP = UP*0.7
+    
+    value_1 = MathTex(r'5063+1^2=5064').move_to(UP)
+    value_2 = MathTex(r'5063+2^2=5067').move_to(UP-STEP)
+    value_3 = MathTex(r'5063+3^2=5072').move_to(UP-2*STEP)
+    dots = MathTex(r'\dots').move_to(UP-3*STEP)
+    value_4 = MathTex(r'5063+11^2=5184').move_to(UP-4*STEP)
+    value_4_2 = MathTex(r'5063+11^2=72^2').move_to(UP-4*STEP)
+    value_4_3 = MathTex(r'5063+11^2=72^2', font_size = 80)
+    value_4_4 = MathTex(r'5063=72^2-11^2', font_size = 80)
+    value_4_5 = MathTex(r'5063=(72+11)\cdot (72-11)', font_size = 80)
+    value_4_6 = MathTex(r'5063=83\cdot 61', font_size = 80)
+
+    self.play(Create(value_1))
+    self.play(Create(value_2))
+    self.play(Create(value_3))
+
+    self.play(Create(dots))
+
+    self.play(Create(value_4))
+    self.play(Transform(value_4, value_4_2))
+
+    self.play(FadeOut(VGroup(value_1, value_2, value_3, dots)), Transform(value_4, value_4_3))
+    self.play(Transform(value_4, value_4_4))
+    self.play(Transform(value_4, value_4_5))
+    self.play(Transform(value_4, value_4_6))
+    pass
 
 def KratsKritsExplanation(self):
+
+    header = Text("KratsKrits's Factorization", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
+
+    self.play(Create(header))
+    self.play(FadeOut(header))
+
+    text_1 = MathTex(r'N=n_1\cdot n_2', font_size=60)
+    text_1_2 = MathTex(r'kN=k\cdot n_1\cdot n_2', font_size=60)
+    text_1_3 = MathTex(r'=(a+b)\cdot (a-b)', font_size=60).move_to(DOWN)
+    text_1_4 = MathTex(r'gdc(N)', font_size=60).move_to(RIGHT*3+UP)
+
+    self.play(Create(text_1))
+    self.play(Transform(text_1, text_1_2))
+    self.play(Create(text_1_3))
+    self.remove(text_1)
+    self.play(text_1_2.animate.move_to(RIGHT*3), text_1_3.animate.move_to(RIGHT*3+DOWN))
+
+    table_h_1 = MathTex(r'a+b', font_size=60).move_to(LEFT*5 + UP*2.5)
+    table_h_2 = MathTex(r'a-b', font_size=60).move_to(LEFT*3 + UP*2.5)
+
+    table_r_1_1 = MathTex(r'k\cdot n_1', font_size=40).move_to(LEFT*5 + UP*1.5)
+    table_r_1_2 = MathTex(r'n_2', font_size=40).move_to(LEFT*3 + UP*1.5)
+    table_r_2_1 = MathTex(r'k\cdot n_2', font_size=40).move_to(LEFT*5 + UP*0.5)
+    table_r_2_2 = MathTex(r'n_1', font_size=40).move_to(LEFT*3 + UP*0.5)
+    table_r_3_1 = MathTex(r'k', font_size=40).move_to(LEFT*5 + DOWN*0.5)
+    table_r_3_2 = MathTex(r'n_1\cdot n_2', font_size=40).move_to(LEFT*3 + DOWN*0.5)
+    table_r_4_1 = MathTex(r'\dots', font_size=60).move_to(LEFT*5 + DOWN*1.5)
+    table_r_4_2 = MathTex(r'\dots', font_size=60).move_to(LEFT*3 + DOWN*1.5)
+
+    table_separators = VGroup(
+        Line(LEFT*6 + DOWN*3, LEFT*6 + UP*3),
+        Line(LEFT*4 + DOWN*3, LEFT*4 + UP*3),
+        Line(LEFT*2 + DOWN*3, LEFT*2 + UP*3),
+        Line(LEFT*6 + UP*2, LEFT*2 + UP*2)
+    )
+
+    self.play(Create(table_separators))
+    self.play(Create(table_h_1), Create(table_h_2))
+
+    self.play(Create(table_r_1_1))
+    self.play(Create(table_r_1_2))
+
+    self.play(Create(table_r_2_1))
+    self.play(Create(table_r_2_2))
+
+    self.play(Create(table_r_3_1))
+    self.play(Create(table_r_3_2))
+
+    self.play(Create(table_r_4_1))
+    self.play(Create(table_r_4_2))
+
+    self.play(Create(text_1_4))
+
+    self.play(
+        Transform( table_r_1_1, MathTex(r'n_1', font_size=40).move_to(LEFT*5 + UP*1.5) ),
+        Transform( table_r_2_1, MathTex(r'n_2', font_size=40).move_to(LEFT*5 + UP*0.5) ),
+        Transform( table_r_3_1, MathTex(r'k', font_size=40).move_to(LEFT*5 + DOWN*0.5) ),
+        Transform( table_r_3_2, MathTex(r'N', font_size=40).move_to(LEFT*3 + DOWN*0.5) )
+    )
+
+    correct = Rectangle(height=2, width=4, stroke_color = GREEN).move_to(LEFT*4+UP)
+    self.play(Create(correct), Create(Cross(table_r_3_1)), Create(Cross(table_r_3_2)))
+
+    self.play(FadeOut(VGroup(*self.mobjects)))
+
+    text_2 = MathTex(r'N+a^2=b^2', font_size=60)
+    text_2_2 = MathTex(r'a^2\equiv b^2\ (\text{mod}\ N)', font_size=60)
+
+    self.play(Create(text_2))
+    self.play(Transform(text_2, text_2_2))
+
     pass
 
 def QuadraticSieveExplanation(self):

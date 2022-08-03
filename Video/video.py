@@ -2,6 +2,7 @@ from math import ceil, sqrt
 import string
 from tkinter import font
 from tokenize import String
+from venv import create
 from wsgiref.util import guess_scheme
 from manim import *
 from numpy import full
@@ -37,12 +38,12 @@ def HideTextbox(self, textbox) -> None:
 class CreateVideo(Scene):
     def construct(self):
         #StartExplanation(self)
-        SieveOfEratosthenesExplanation(self)
-        self.play(FadeOut(VGroup(*self.mobjects)))
-        #FermatExplanation(self)
+        #SieveOfEratosthenesExplanation(self)
+        FermatExplanation(self)
         #KratsKritsExplanation(self)
         #QuadraticSieveExplanation(self)
         #OptimizeExplanation(self)
+        pass
 
 
 def StartExplanation(self):
@@ -126,9 +127,88 @@ def SieveOfEratosthenesExplanation(self):
     self.play(Create(text_1))
     self.play(Create(text_2))
 
+    self.play(FadeOut(VGroup(*self.mobjects)))
+
     pass
 
 def FermatExplanation(self):
+
+    # When building up to the superior factorization algorithms, we have to look at Fermat's Factorization.
+
+    header = Text("Fermat's Factorization", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
+
+    self.play(Create(header))
+    self.play(FadeOut(header))
+
+    # Have you ever tried factoring even integers and didn't find any factors? – No?
+
+    number_1 = MathTex(r'6', font_size=60, color=ACCENT_COLOR).move_to(3*LEFT)
+    number_2 = MathTex(r'26', font_size=60, color=ACCENT_COLOR)
+    number_3 = MathTex(r'768', font_size=60, color=ACCENT_COLOR).move_to(3*RIGHT)
+    numbers_group = VGroup(*[number_1, number_2, number_3])
+
+    self.play(Create(numbers_group))
+    self.play(FadeOut(numbers_group))
+
+    # Well if you have any brain capacity you’d spot the obvious factor, namely 2.
+
+    text_1 = Text("2", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
+
+    self.play(Create(text_1))
+    self.play(FadeOut(text_1))
+
+    # That said, finding 2 and its powers is for us humans quite trivial. And It turns out it’s really trivial for computers too.
+
+    self.play(Create(numbers_group))
+
+    self.play(
+        Transform(number_1, MathTex(r'3\cdot2', font_size=60, color=ACCENT_COLOR).move_to(3*LEFT) ),
+        Transform(number_2, MathTex(r'13\cdot2', font_size=60, color=ACCENT_COLOR) ),
+        Transform(number_3, MathTex(r'384\cdot2', font_size=60, color=ACCENT_COLOR).move_to(3*RIGHT) )
+        )
+    self.play(
+        Transform(number_3, MathTex(r'3\cdot2^8', font_size=60, color=ACCENT_COLOR).move_to(3*RIGHT) )
+        )
+    self.wait(2)
+
+    self.play(FadeOut(numbers_group))
+
+    # After taking care of the powers of two, we’re either done, or what we have left is an odd number.
+
+    text_2_1 = MathTex(r'N=a\cdot b\wedge N\in\text{Odd}')
+    text_2_2 = MathTex(r'\Rightarrow a\in\text{Odd}\wedge b\in\text{Odd}')
+
+    text_2_2.move_to(1*DOWN)
+
+    text_2 = VGroup(text_2_1, text_2_2)
+
+    self.play(Create(text_2))
+
+    self.play(Uncreate(text_2))
+
+    numline = NumberLine()
+
+    self.play(Create(numline))
+
+    Odd_1 = Dot(RIGHT*3, color=YELLOW, radius= DEFAULT_DOT_RADIUS*2)
+    Odd_2 = Dot(LEFT*5, color=YELLOW, radius= DEFAULT_DOT_RADIUS*2)
+
+    Mid = Dot((RIGHT*3+LEFT*5)/2, radius= DEFAULT_DOT_RADIUS*2)
+
+    self.play(Create(Odd_1),Create(Odd_2))
+    self.play(Create(Mid))
+    
+    text_3_1 = MathTex(r'N=a\cdot b\wedge N\in\text{Odd}').move_to(UP*3)
+    text_3_2_1 = MathTex(r'N=(d+m)\cdot(d-m)').move_to(UP*2)
+
+    text_3_2_2 = MathTex(r'N=d^2-m^2').move_to(text_3_2_1)
+
+    self.play(Create(text_3_1), Create(text_3_2_1))
+    self.play(Transform(text_3_2_1, text_3_2_2))
+
+
+
+
     pass
 
 def KratsKritsExplanation(self):

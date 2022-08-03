@@ -637,6 +637,7 @@ def QuadraticSieveExplanation(self):
     self.play(FadeIn(mat))
     self.wait(TIME)
 
+    self.play(mat.animate.shift(RIGHT + DOWN * 0.25))
 
     Xs.color = BLUE
     Xs.arrange(RIGHT, buff=0.8).next_to(mat, UP, buff=0.5)
@@ -650,7 +651,6 @@ def QuadraticSieveExplanation(self):
     ).arrange(DOWN, buff=0.4).next_to(mat, LEFT, buff=0.5)
     primes.color = BLUE
 
-    self.play(mat.animate.shift(RIGHT + DOWN * 0.25))
     self.play(FadeIn(Xs), FadeIn(primes))
     self.wait(TIME)
 

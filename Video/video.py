@@ -11,7 +11,8 @@ from pygments import highlight
 # Background color defined in manim.cfg
 TEXT_COLOR = GRAY_A
 ACCENT_COLOR = BLUE
-ACCENT2_COLOR = ORANGE
+ACCENT2_COLOR = RED
+TIME = 0 # wait time in each self.wait
 
 TEXT_ARGS =   {"font": "Futura Md BT", "font_size": 50, "color": TEXT_COLOR}
 TEXT_ARGS_S = {"font": "Futura Md BT", "font_size": 40, "color": TEXT_COLOR}
@@ -39,10 +40,10 @@ class CreateVideo(Scene):
     def construct(self):
         #StartExplanation(self)
         #SieveOfEratosthenesExplanation(self)
-        FermatExplanation(self)
+        #FermatExplanation(self)
         #KratsKritsExplanation(self)
-        #QuadraticSieveExplanation(self)
-        #OptimizeExplanation(self)
+        QuadraticSieveExplanation(self)
+        OptimizeExplanation(self)
         pass
 
 
@@ -129,7 +130,6 @@ def SieveOfEratosthenesExplanation(self):
 
     self.play(FadeOut(VGroup(*self.mobjects)))
 
-    pass
 
 def FermatExplanation(self):
 
@@ -227,7 +227,6 @@ def FermatExplanation(self):
 
 
 
-    pass
 
 def KratsKritsExplanation(self):
     pass
@@ -236,25 +235,25 @@ def QuadraticSieveExplanation(self):
 
     header = Text("Quadratic Sieve", font="Futura Md BT", font_size=100, color=ACCENT_COLOR)
     self.play(Create(header))
-    self.wait(0)
+    self.wait(TIME)
     self.play(Uncreate(header))
 
     bText = Text("B = 13", font="Futura Md BT", font_size=40, color=TEXT_COLOR)
     self.play(FadeIn(bText))
 
-    self.wait(0)
+    self.wait(TIME)
     self.play(bText.animate.to_edge(UP + LEFT))
-    self.wait()
+    self.wait(TIME)
 
     example1first = Text("20")
     example1second = MathTex(r"5\cdot2\cdot2")
     example1first.shift(-DOWN * 0.5)
     self.play(FadeIn(example1first), example1first.animate.shift(DOWN * 0.5))
     self.play(Transform(example1first, example1second))
-    self.wait(0)
+    self.wait(TIME)
     checkmark = MathTex(r"\checkmark", color=GREEN).next_to(example1first, RIGHT)
     self.play(FadeIn(checkmark))
-    self.wait(0)
+    self.wait(TIME)
     self.play(FadeOut(example1first), FadeOut(checkmark))
 
 
@@ -263,17 +262,20 @@ def QuadraticSieveExplanation(self):
     example2first.shift(-DOWN * 0.5)
     self.play(FadeIn(example2first), example2first.animate.shift(DOWN * 0.5))
     self.play(Transform(example2first, example2second))
-    self.wait(0)
+    self.wait(TIME)
     self.play(example2first.animate.set_color(RED))
-    self.wait(0)
+    self.wait(TIME)
     self.play(FadeOut(example2first))
 
     algorithmPart1 = CreateTextbox("Finding B-smooth numbers", ACCENT_COLOR).shift(UP * 0.5)
     algorithmPart2 = CreateTextbox("Solve kernels of a matrix", ACCENT2_COLOR)
     algorithmPart2.next_to(algorithmPart1, DOWN, buff=1)
 
-    ShowTextbox(algorithmPart1)
-    ShowTextbox(algorithmPart2)
+    self.wait(TIME)
+    ShowTextbox(self, algorithmPart1)
+    self.wait(TIME)
+    ShowTextbox(self, algorithmPart2)
+    self.wait(TIME)
 
     self.play(
         algorithmPart1.animate.to_edge(UP),
@@ -282,41 +284,50 @@ def QuadraticSieveExplanation(self):
         FadeOut(algorithmPart2)
     )
 
-    self.wait()
+    self.wait(TIME)
     self.play(FadeOut(algorithmPart1))
-
     algorithmPart2.shift(UP)
+    self.wait(TIME)
 
     ############### Part 1 #################
 
     text1 = MathTex("x^2\ mod\ N \\text{ is B-smooth}", **MATH_ARGS).shift(UP)
     self.play(FadeIn(text1))
+    self.wait(TIME)
 
     nText = Text("N = 1817", **TEXT_ARGS_S)
     self.play(Create(nText))
+    self.wait(TIME)
     self.play(nText.animate.to_edge(UP + LEFT).shift(DOWN * 0.75))
+    self.wait(TIME)
 
     guessText = Text("guess = 43", **TEXT_ARGS_S).to_edge(UP + LEFT).shift(DOWN * 1.5)
     self.play(FadeIn(guessText))
+    self.wait(TIME)
 
     part1example = MathTex("34^2\ mod\ 1817", **MATH_ARGS)
     self.play(Create(part1example))
+    self.wait(TIME)
     self.play(part1example.animate.shift(LEFT * 2))
+    self.wait(TIME)
     part1exampleResult = MathTex("= 32", **MATH_ARGS).next_to(part1example, RIGHT, buff=0.5)
     _temp = MathTex("=\ 2\cdot2\cdot2\cdot2\cdot2", **MATH_ARGS).next_to(part1example, RIGHT, buff=0.5)
 
     self.play(FadeIn(part1exampleResult))
+    self.wait(TIME)
     self.play(Transform(part1exampleResult, _temp))
+    self.wait(TIME)
 
     _newGuess = Text("guess = 44", **TEXT_ARGS_S).move_to(guessText)
     self.play(Transform(guessText, _newGuess))
+    self.wait(TIME)
 
     ############### Sieving ###############
 
     pauseEffect = Square(1000).set_fill(WHITE, 0.25)
     self.add(pauseEffect)
 
-    self.wait(0.5)
+    self.wait(TIME)
 
     # Clear
     self.play(
@@ -358,41 +369,51 @@ def QuadraticSieveExplanation(self):
     self.add(counts)
 
     self.play(FadeIn(primes))
+    self.wait(TIME)
 
 
     pointer = Arrow(start=DOWN, end=UP, color=RED).next_to(primes[0], DOWN)
 
     self.play(Create(pointer))
+    self.wait(TIME)
 
     temp = Text("2420", **TEXT_ARGS).move_to(toFactor)
     self.play(Transform(toFactor, temp))
     self.play(Transform(counts[0], Text("1 ").move_to(counts[0])))
+    self.wait(TIME)
 
     temp = Text("1210", **TEXT_ARGS).move_to(toFactor)
     self.play(Transform(toFactor, temp))
     self.play(Transform(counts[0], Text("2 ").move_to(counts[0])))
+    self.wait(TIME)
 
     temp = Text("605", **TEXT_ARGS).move_to(toFactor)
     self.play(Transform(toFactor, temp))
     self.play(Transform(counts[0], Text("3 ").move_to(counts[0])))
+    self.wait(TIME)
 
     self.play(pointer.animate.next_to(primes[1], DOWN))
     self.play(pointer.animate.next_to(primes[2], DOWN))
+    self.wait(TIME)
 
     temp = Text("121", **TEXT_ARGS).move_to(toFactor)
     self.play(Transform(toFactor, temp))
     self.play(Transform(counts[2], Text("1 ").move_to(counts[2])))
+    self.wait(TIME)
 
     self.play(pointer.animate.next_to(primes[3], DOWN))
     self.play(pointer.animate.next_to(primes[4], DOWN))
+    self.wait(TIME)
 
     temp = Text("11", **TEXT_ARGS).move_to(toFactor)
     self.play(Transform(toFactor, temp))
     self.play(Transform(counts[4], Text("1 ").move_to(counts[4])))
+    self.wait(TIME)
 
     temp = Text("1", **TEXT_ARGS).move_to(toFactor)
     self.play(Transform(toFactor, temp))
     self.play(Transform(counts[4], Text("2 ").move_to(counts[4])))
+    self.wait(TIME)
 
     morePrimes = VGroup(
         Text("17", **TEXT_ARGS),
@@ -406,8 +427,10 @@ def QuadraticSieveExplanation(self):
         num.shift(RIGHT * (i - len(morePrimes)/2))
     morePrimes.next_to(primes, RIGHT, buff=0.4).set_fill(GRAY)
     self.play(FadeIn(morePrimes))
+    self.wait(TIME)
     arrow = Arrow(ORIGIN, 2 * RIGHT, color=RED).next_to(primes[-1], DOWN).shift(RIGHT * 0.5)
     self.play(Create(arrow))
+    self.wait(TIME)
 
     self.play(
         FadeOut(morePrimes),
@@ -417,11 +440,15 @@ def QuadraticSieveExplanation(self):
         Uncreate(pointer),
         Uncreate(arrow)
     )
+    self.wait(TIME)
 
     self.play(FadeIn(algorithmPart1))
+    self.wait(TIME)
     self.play(algorithmPart1.animate.move_to(UP), algorithmPart2.animate.shift(DOWN), FadeIn(algorithmPart2))
+    self.wait(TIME)
 
     self.play(FadeOut(algorithmPart1), algorithmPart2.animate.to_edge(UP))
+    self.wait(TIME)
     self.play(FadeOut(algorithmPart2))
 
     ######### Part 2 ##########
@@ -451,30 +478,36 @@ def QuadraticSieveExplanation(self):
     
 
     self.play(Create(equations))
+    self.wait(TIME)
 
     highlightBox = Rectangle(GRAY_D, 3.6, 1.1).shift(UP * 1.4 + LEFT * 0.5).set_fill(GRAY_D, 1)
     highlightBox.z_index = 0
     self.play(FadeIn(highlightBox))
-    self.play(FadeOut(highlightBox))
-
     self.play(FadeIn(factoredForms))
+    self.wait(TIME)
     self.play(FadeOut(factoredForms))
+    self.play(FadeOut(highlightBox))
+    self.wait(TIME)
 
     goal = MathTex("a^2\\equiv b^2\\ mod\\ N", **MATH_ARGS_S).shift(DOWN * 2)
     self.play(Create(goal))
 
-    self.play(FadeIn(highlightBox))
-    self.play(FadeOut(highlightBox))
+    #self.play(FadeIn(highlightBox))
+    #self.play(FadeOut(highlightBox))
 
     squareExample1 = MathTex("47","^2","\cdot","51","^2", font_size=50, color=BLUE).shift(3*LEFT + DOWN)
     squareExample1_2 = MathTex("(","47","\cdot","51",")","^2", font_size=50, color=BLUE).move_to(squareExample1)
 
     self.play(FadeIn(squareExample1))
+    self.wait(TIME)
     self.play(TransformMatchingTex(squareExample1, squareExample1_2), run_time=2)
+    self.wait(TIME)
     self.play(FadeOut(squareExample1_2))
+    self.wait(TIME)
 
     self.play(FadeIn(highlightBox))
     self.play(FadeOut(highlightBox))
+    self.wait(TIME)
 
     numbers = VGroup(
         MathTex("\\ 32", **MATH_ARGS).shift(UP * 1.5),
@@ -490,6 +523,7 @@ def QuadraticSieveExplanation(self):
         TransformMatchingTex(equations[3], numbers[3]),
         FadeOut(goal)
     )
+    self.wait(TIME)
     factoredForms.move_to(numbers)
     factoredForms.color = TEXT_COLOR
     self.play(
@@ -498,6 +532,7 @@ def QuadraticSieveExplanation(self):
         TransformMatchingTex(numbers[2], factoredForms[2]),
         TransformMatchingTex(numbers[3], factoredForms[3])
     )
+    self.wait(TIME)
 
     
     squareExample2 = VGroup(
@@ -511,11 +546,14 @@ def QuadraticSieveExplanation(self):
         tex.color = BLUE
 
     self.play(FadeIn(squareExample2[0]))
+    self.wait(TIME)
     self.play(TransformMatchingTex(squareExample2[0].copy(), squareExample2[1]), run_time=2)
     self.play(TransformMatchingTex(squareExample2[1].copy(), squareExample2[2]), run_time=2)
     self.play(TransformMatchingTex(squareExample2[2].copy(), squareExample2[3]), run_time=2)
+    self.wait(TIME)
 
     self.play(FadeOut(squareExample2))
+    self.wait(TIME)
 
     fullFactoredForms = VGroup(
         MathTex("2^5","\cdot","3^0","\cdot","5^0","\cdot","7^0","\cdot","11^0","\cdot","13^0", **MATH_ARGS).shift(UP * 1.5),
@@ -527,22 +565,26 @@ def QuadraticSieveExplanation(self):
         tex.set_color_by_tex("0", GRAY_D)
 
     self.play(TransformMatchingTex(factoredForms, fullFactoredForms), runTime=2)
+    self.wait(TIME)
 
     even = Text("Even", **TEXT_ARGS).shift(RIGHT * 4 + UP * 1.3)
     even.color = RED
     evenMod = MathTex("x\equiv0\ mod\ 2").next_to(even, DOWN, buff=0.5)
     self.play(Create(even))
     self.play(FadeIn(evenMod))
+    self.wait(TIME)
 
     odd = Text("Odd", **TEXT_ARGS).shift(RIGHT * 4 - UP * 1.3)
     odd.color = BLUE
     oddMod = MathTex("x\equiv1\ mod\ 2").next_to(odd, DOWN, buff=0.5)
     self.play(Create(odd))
     self.play(FadeIn(oddMod))
+    self.wait(TIME)
 
 
     self.play(FadeOut(odd), FadeOut(oddMod), FadeOut(even), FadeOut(evenMod))
     self.play(fullFactoredForms.animate.to_edge(UP + RIGHT))
+    self.wait(TIME)
 
     Xs = VGroup(
         MathTex("x_1", **MATH_ARGS).shift(UP * 1.5),
@@ -553,20 +595,27 @@ def QuadraticSieveExplanation(self):
     Xs.color = BLUE
 
     self.play(FadeIn(Xs))
+    self.wait(TIME)
 
     exponents2 = MathTex("2^5","\ ","2^4","\ ","2^3","\ ","2^4", **MATH_ARGS_S).shift(DOWN * 2)
     exponents2_add = MathTex("5","x_1+","4","x_2+","3","x_3+","4","x_4", **MATH_ARGS_S).move_to(exponents2)
     modulo2Equiv  = MathTex("5","x_1+","4","x_2+","3","x_3+","4","x_4","\equiv0\ mod\ 2", **MATH_ARGS_S).move_to(exponents2)
     self.play(TransformMatchingTex(fullFactoredForms.copy(), exponents2))
+    self.wait(TIME)
     self.play(TransformMatchingTex(exponents2, exponents2_add))
+    self.wait(TIME)
     self.play(TransformMatchingTex(exponents2_add, modulo2Equiv))
+    self.wait(TIME)
 
     modulo2Equiv_simple1  = MathTex("5","x_1+","0","x_2+","3","x_3+","4","x_4","\equiv0\ mod\ 2", **MATH_ARGS_S).move_to(modulo2Equiv)
     modulo2Equiv_simple2  = MathTex("1","x_1+","0","x_2+","3","x_3+","4","x_4","\equiv0\ mod\ 2", **MATH_ARGS_S).move_to(modulo2Equiv)
     modulo2Equiv_simple3  = MathTex("1","x_1+","0","x_2+","1","x_3+","0","x_4","\equiv0\ mod\ 2", **MATH_ARGS_S).move_to(modulo2Equiv)
     self.play(Transform(modulo2Equiv, modulo2Equiv_simple1))
+    self.wait(TIME)
     self.play(Transform(modulo2Equiv, modulo2Equiv_simple2))
+    self.wait(TIME)
     self.play(Transform(modulo2Equiv, modulo2Equiv_simple3))
+    self.wait(TIME)
 
     linearEquations = VGroup(modulo2Equiv)
     linearEquations += MathTex("0x_1+0x_2+0x_3+0x_4\equiv0\ mod\ 2", **MATH_ARGS_S)
@@ -576,16 +625,18 @@ def QuadraticSieveExplanation(self):
     linearEquations += MathTex("0x_1+1x_2+0x_3+0x_4\equiv0\ mod\ 2", **MATH_ARGS_S)
 
     self.play(FadeOut(fullFactoredForms), FadeOut(Xs), FadeOut(modulo2Equiv))
+    self.wait(TIME)
     linearEquations.arrange(DOWN).move_to(ORIGIN)
     self.play(Create(linearEquations))
+    self.wait(TIME)
 
     mat = Matrix([[1, 0, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 1, 0, 0]])
 
 
     self.play(FadeOut(linearEquations))
     self.play(FadeIn(mat))
+    self.wait(TIME)
 
-    self.play(mat.animate.shift(RIGHT + DOWN * 0.25))
 
     Xs.color = BLUE
     Xs.arrange(RIGHT, buff=0.8).next_to(mat, UP, buff=0.5)
@@ -599,11 +650,26 @@ def QuadraticSieveExplanation(self):
     ).arrange(DOWN, buff=0.4).next_to(mat, LEFT, buff=0.5)
     primes.color = BLUE
 
+    self.play(mat.animate.shift(RIGHT + DOWN * 0.25))
     self.play(FadeIn(Xs), FadeIn(primes))
+    self.wait(TIME)
 
     highlight = SurroundingRectangle(mat.get_entries()[3 * 4 + 1])
     self.play(Create(highlight))
+    self.wait(TIME)
     self.play(Uncreate(highlight))
+    self.wait(TIME)
+
+    image = ImageMobject("findKernelVideo.png")
+    image.scale(2)
+    image.shift(DOWN * 6)
+
+    self.add(image)
+    self.play(image.animate.shift(UP * 6))
+    self.wait(TIME)
+    self.play(image.animate.shift(DOWN * 6))
+    self.wait(TIME)
+
 
     solutionVec = VGroup(
         MathTex("1", **MATH_ARGS),
@@ -614,16 +680,20 @@ def QuadraticSieveExplanation(self):
     solutionVec.color = BLUE
 
     self.play(Transform(Xs, solutionVec))
+    self.wait(TIME)
 
     self.play(FadeOut(Xs), FadeOut(primes), FadeOut(mat))
     numbers.move_to(ORIGIN)
     self.play(FadeIn(numbers))
+    self.wait(TIME)
 
     takenNums = VGroup( MathTex("\\ 32", **MATH_ARGS),MathTex("392", **MATH_ARGS)).arrange(DOWN, buff=0.5)
     self.play(TransformMatchingTex(numbers, takenNums))
     self.play(takenNums[0].animate.set_color(RED), takenNums[1].animate.set_color(ORANGE))
+    self.wait(TIME)
 
     self.play(takenNums.animate.shift(UP * 2))
+    self.wait(TIME)
 
     finalEq = MathTex("43^2","\cdot ","47^2","\equiv ","2^5","\cdot ","2^3\cdot 7^2","\ mod\ 1817", **MATH_ARGS)
     finalEq.set_color_by_tex_to_color_map({"2^5": RED, "43^2": RED, "2^3\cdot 7^2": ORANGE, "47^2": ORANGE})
@@ -637,9 +707,13 @@ def QuadraticSieveExplanation(self):
     gdc.color = BLUE
 
     self.play(Create(finalEq))
+    self.wait(TIME)
     self.play(Create(finalEq_2))
+    self.wait(TIME)
     self.play(FadeIn(goal))
+    self.wait(TIME)
     self.play(FadeIn(gdc))
+    self.wait(TIME)
 
     self.play(FadeOut(takenNums))
 
@@ -650,12 +724,14 @@ def QuadraticSieveExplanation(self):
     dot = Text("⋅").move_to(solution1).shift(LEFT * 1.3)
 
     self.play(FadeIn(solution1), FadeIn(dot))
+    self.wait(TIME)
     self.play(Transform(solution1, solution2), dot.animate.shift(LEFT *  0.2))
+    self.wait(TIME)
     self.play(Transform(solution1, solution3), dot.animate.shift(LEFT * -0.2))
+    self.wait(TIME)
 
 
-    self.wait(2)
-    self.play(Uncreate(solution1), FadeOut(gdc), FadeOut(goal), FadeOut(finalEq), FadeOut(finalEq_2))
+    self.play(Uncreate(solution1), FadeOut(dot), FadeOut(gdc), FadeOut(goal), FadeOut(finalEq), FadeOut(finalEq_2))
     self.play(FadeOut(bText), FadeOut(nText))
 
 def OptimizeExplanation(self):
@@ -714,27 +790,37 @@ def OptimizeExplanation(self):
 
 
     ShowTextbox(self, tower[0])
+    self.wait(TIME)
     ShowTextbox(self, tower[1])
+    self.wait(TIME)
     ShowTextbox(self, tower[2])
+    self.wait(TIME)
 
     ShowTextbox(self, tower[3][0][0])
+    self.wait(TIME)
     ShowTextbox(self, tower[3][0][1])
+    self.wait(TIME)
     ShowTextbox(self, tower[3][0][2])
     CreateArrow(tower[3][0])
 
     ShowTextbox(self, tower[3][1])
+    self.wait(TIME)
     self.play(FadeIn(matVisual))
+    self.wait(TIME)
     self.play(FadeOut(matVisual))
 
     ShowTextbox(self, tower[3][2][0])
+    self.wait(TIME)
     ShowTextbox(self, tower[3][2][1])
     gdc = MathTex("gdc(N,\ a-b)", **MATH_ARGS_S).shift(RIGHT * 2.5)
     gdc.color = BLUE
     self.play(FadeIn(gdc))
     CreateArrow(tower[3][2])
+    self.wait(TIME)
     ShowTextbox(self, tower[3][3])
     CreateArrow(tower[3])
     self.play(FadeOut(gdc))
+    self.wait(TIME)
 
     originalTower = tower.copy()
 
@@ -755,30 +841,40 @@ def OptimizeExplanation(self):
         pickGuess.animate.move_to(ORIGIN).to_edge(UP),
         pickData.animate.to_edge(UP + RIGHT)
     )
+    self.wait(TIME)
     self.remove(tower)
 
     self.play( FadeOut(pickGuess), FadeOut(pickData), pickB.animate.move_to(ORIGIN).to_edge(UP))
+    self.wait(TIME)
 
     bFormula = MathTex("B=(e^{\sqrt{\ln(N)\ln(\ln N)}})^{\\frac{1}{\sqrt{2}}}", **MATH_ARGS)
     self.play(Create(bFormula))
+    self.wait(TIME)
     self.play(FadeOut(bFormula))
 
     self.play(FadeIn(pickGuess), FadeIn(pickData), pickB.animate.to_edge(UP + LEFT))
+    self.wait(TIME)
     self.play( FadeOut(pickData), pickGuess.animate.move_to(ORIGIN).to_edge(UP), FadeOut(pickB))
+    self.wait(TIME)
 
     guessFormula = MathTex("guess=\lceil \sqrt{N}\\rceil", **MATH_ARGS)
     guessCalc = MathTex("x=guess^2\ mod\ N", **MATH_ARGS).next_to(guessFormula, DOWN)
 
     self.play(FadeIn(guessCalc))
+    self.wait(TIME)
     self.play(Create(guessFormula))
+    self.wait(TIME)
 
     self.play(FadeOut(guessCalc), FadeOut(guessFormula))
 
     self.play(FadeIn(pickB), FadeIn(pickData), pickGuess.animate.move_to(ORIGIN).to_edge(UP))
+    self.wait(TIME)
     self.play( FadeOut(pickB), pickData.animate.move_to(ORIGIN).to_edge(UP), FadeOut(pickGuess))
+    self.wait(TIME)
 
     dataFormula = MathTex("\\text{amountTo}(B)+5")
     self.play(FadeIn(dataFormula))
+    self.wait(TIME)
     self.play(FadeOut(pickData), FadeOut(dataFormula))
 
 
@@ -796,17 +892,22 @@ def OptimizeExplanation(self):
     self.play(originalTower.animate.shift(RIGHT * 7))
 
     self.play(FadeIn(matVisual))
+    self.wait(TIME)
     self.play(FadeOut(matVisual))
+    self.wait(TIME)
 
     self.play(originalTower.animate.arrange(DOWN, buff=scalar * buffer).to_edge(UP + LEFT))
     self.play(originalTower[4].animate.shift(RIGHT * 0.5))
+    self.wait(TIME)
 
     eulerCheck = MathTex("N^{\\frac{p-1}{2}}mod\ p", **MATH_ARGS).shift(RIGHT * 2)
     self.play(Create(eulerCheck))
+    self.wait(TIME)
     self.play(FadeOut(eulerCheck))
 
 
     self.play(FadeIn(matVisual))
+    self.wait(TIME)
 
     highlight1 = Rectangle(GRAY_D, 1.15, 3.6).shift(RIGHT * 2.4 + UP * 0.45).set_fill(GRAY_D, 1)
     highlight2 = Rectangle(GRAY_D, 0.6, 3.6).shift(RIGHT * 2.4 + DOWN * 1.05).set_fill(GRAY_D, 1)
@@ -815,7 +916,9 @@ def OptimizeExplanation(self):
     highlight2.z_index = 0
 
     self.play(FadeIn(highlight1), FadeIn(highlight2))
+    self.wait(TIME)
     self.play(FadeOut(highlight1), FadeOut(highlight2))
+    self.wait(TIME)
 
     self.play(FadeOut(matVisual))
     self.play(originalTower.animate.move_to(ORIGIN))

@@ -40,7 +40,6 @@ class CreateVideo(Scene):
     def construct(self):
         #StartExplanation(self)
         #SieveOfEratosthenesExplanation(self)
-        #TrialDivisionExplanation(self)
         #FermatExplanation(self)
         #FermatExplanationExample(self)
         #KratsKritsExplanation(self)
@@ -51,15 +50,74 @@ class CreateVideo(Scene):
 
 def StartExplanation(self):
 
-    # Nowadays big prime numbers are used a lot in cryptography. They are used as keys in a lot of different applications. And when I said big prime numbers I ment Big [ näytetään dramaattisesti valtava alkuluku ]
+    # Nowadays big prime numbers are used a lot in cryptography.
+
+    lock_image = SVGMobject('lock.svg', height=4)
+    key_image = SVGMobject('key.svg', height=4)
+
+    self.play(Create(lock_image))
+
+    # These numbers are used to create big semiprimes often used as keys
+
+    self.play(Transform(lock_image, key_image))
+    
+    # But when I said big primes you might wonder how big
+
+    text_1 = Text('?', font="Futura Md BT", font_size=100)
+
+    self.play(Uncreate(lock_image), Create(text_1))
+
+    self.play(Uncreate(text_1))
+
+    number_1 = Text('2', font="Futura Md BT", font_size=100)
+    number_2 = Text('61', font="Futura Md BT", font_size=100)
+    number_3 = Text('8256536257', font="Futura Md BT", font_size=100)
+    number_4 = Paragraph('''
+
+    -----BEGIN PUBLIC KEY-----
+
+        MIIBITANBgkqhkiG9w0BAQEFAAOCAQ4AMIIBCQKCAQB6kft8xpg60bjBp0pNsKlx
+        FWkSRl3kf0CCSAo2zfPaLoVzfJL8LpzjfK59AnAVeM+n2z1mY3WBfTSVDDcq6NNk
+        bSIH4Ov/0/MSSZpjRp4Z5roQwZVihhSoNN2aPREDngylXHBb5+WZ9n+PsY9yu0H6
+        15Y+NWDIlUI9KCg+MKmp7h7+Pos8lIESVu/tIoNIL1ICuBYSusAK0wGoNfJjOiit
+        cCkSd7g/kFXaXtF0Wz/KEaJ+dlksXZRq95y60EY5xN3CKamQuMEfHWc3sa/5qEsm
+        6q3+QkW2oNYHEHK+F/bhco4SK0nXM4kvHy5HUvF0Nv9vlOog2KuY8F5w6XpqmvLN
+        AgMBAAE=
+
+    -----END PUBLIC KEY-----
+
+    ''', font="Futura Md BT", font_size=20)
+
+    number_5 = MathTex(r'10^{300}', font="Futura Md BT", font_size=100)
+
+    # Well the primes of which theese keys consist arent normal primes like 2
+
+    self.play(Create(number_1))
+    self.play(Transform(number_1, number_2))
+    # or like 61
+    self.play(Transform(number_1, number_3))
+    # or even like this behemoth
+    # In reality the keys look like this:
+    self.play(Transform(number_1, number_4))
+
+    # AND the primes that make them up are on the scale of
+    self.play(Transform(number_1, number_5))
+    # 10^600
+
+    # well that got big really fast
+
+    self.wait(1)
+    self.play(Uncreate(number_1))
 
     # Alkutekstit
 
-    OpeningCredits()
+    OpeningCredits(self)
 
-    # When I first saw these big prime numbers I thought to myself: “huh, that seems a bit extreme” and just after that “wait a minute! how on earth could anyone verify that!”. These semiprimes are like over 600 digits long. If they had two factors of the same length they would both be 300 digits long. And you may say: “50 digits phew that doesn’t sound like much”, but think about it in this way: the universe 436,117,077,000,000,000 seconds old – that’s only a at the scale of 10^18, 18 digits, and those potential factors would be on a scale waaay bigger.
+    # When I first saw these big prime numbers I thought to myself: “huh, that seems a bit extreme” and just after that “wait a minute! how on earth could anyone verify that!”. These primes are like over 600 digits long. If they had two factors of the same length they would both be 300 digits long. And you may say: “300 digits phew that doesn’t sound like much”, but think about it in this way: the universe 436,117,077,000,000,000 seconds old – that’s only a at the scale of 10^18, 18 digits, and those potential factors would be on a scale waaay bigger.
 
-    # The classical way of finding factors, called sieve of Eratosthenes goes like this. You start at the beginning of the numberline at two. and then you cross out every second number. Then you move onto three and cross out every third number. and so on. If we want to check some number we’d have to continue this progress and cross numbers until we’d gone over every number smaller than the square root of the number to be verified. That’s because even if the number only had two factors they wouldn’t both be bigger than the square root of the number. If we get back to our giant primes we’ll see how this sieve fairs against them.
+    self.wait(10)
+
+    TrialDivisionExplanation(self)
 
     # Now, If you started checking factors for these primes at the beginning of the universe with a rate of about quintillion numbers a second, you’d still have to check about a billion times more digits until you would have found these potential factors. That is great if you are some sort of an eternal being since you’ve got the answer, but to us mere mortals time is a problem. The amount of possible factors grows about the same rate as the square root of the number if we aren’t using any techniques, and with that we would have to say goodbye to ever factoring these giant numbers. But that got me thinking, what other ways there are to factor these big integers?
 

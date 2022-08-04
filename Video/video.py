@@ -10,7 +10,7 @@ from pygments import highlight
 
 # Background color defined in manim.cfg
 TEXT_COLOR = GRAY_A
-ACCENT_COLOR = BLUE
+ACCENT_COLOR = "#ffe291"
 ACCENT2_COLOR = RED
 TIME = 0 # wait time in each self.wait
 
@@ -40,7 +40,8 @@ class CreateVideo(Scene):
     def construct(self):
         #StartExplanation(self)
         #SieveOfEratosthenesExplanation(self)
-        TrialDivisionExplanation(self)
+        #OpeningCredits(self)
+        #TrialDivisionExplanation(self)
         #FermatExplanation(self)
         #FermatExplanationExample(self)
         #KratsKritsExplanation(self)
@@ -51,6 +52,19 @@ class CreateVideo(Scene):
 
 def StartExplanation(self):
     pass
+
+def OpeningCredits(self):
+    header = Text("Quadratic Sieve", font="Futura Md BT", font_size=100, color=ACCENT_COLOR).move_to(UP*0.5)
+    header_1 = Text("or", font="Futura Md BT", font_size=40, color=ACCENT_COLOR).move_to(DOWN*1.25 + LEFT*20)
+    header_2 = Text("How to factor REALLY fast", font="Futura Md BT", font_size=40, color=ACCENT_COLOR).move_to(DOWN*1.75+LEFT*50)
+    sub_header = Text("Rasse&Kimmo", font="Futura Md BT", font_size=30, color=WHITE).move_to(DOWN*3)
+
+    self.play(Write(header))
+    self.wait(1)
+    self.play(header_1.animate.move_to(DOWN*1.5), header_2.animate.move_to(DOWN*2))
+
+    self.play(Write(sub_header))
+    self.wait(3)
 
 def TrialDivisionExplanation(self):
 

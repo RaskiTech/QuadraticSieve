@@ -40,7 +40,7 @@ class CreateVideo(Scene):
     def construct(self):
         #StartExplanation(self)
         #SieveOfEratosthenesExplanation(self)
-        TrialDivisionExplanation(self)
+        #TrialDivisionExplanation(self)
         #FermatExplanation(self)
         #FermatExplanationExample(self)
         #KratsKritsExplanation(self)
@@ -50,7 +50,36 @@ class CreateVideo(Scene):
 
 
 def StartExplanation(self):
+
+    # Nowadays big prime numbers are used a lot in cryptography. They are used as keys in a lot of different applications. And when I said big prime numbers I ment Big [ näytetään dramaattisesti valtava alkuluku ]
+
+    # Alkutekstit
+
+    OpeningCredits()
+
+    # When I first saw these big prime numbers I thought to myself: “huh, that seems a bit extreme” and just after that “wait a minute! how on earth could anyone verify that!”. These semiprimes are like over 600 digits long. If they had two factors of the same length they would both be 300 digits long. And you may say: “50 digits phew that doesn’t sound like much”, but think about it in this way: the universe 436,117,077,000,000,000 seconds old – that’s only a at the scale of 10^18, 18 digits, and those potential factors would be on a scale waaay bigger.
+
+    # The classical way of finding factors, called sieve of Eratosthenes goes like this. You start at the beginning of the numberline at two. and then you cross out every second number. Then you move onto three and cross out every third number. and so on. If we want to check some number we’d have to continue this progress and cross numbers until we’d gone over every number smaller than the square root of the number to be verified. That’s because even if the number only had two factors they wouldn’t both be bigger than the square root of the number. If we get back to our giant primes we’ll see how this sieve fairs against them.
+
+    # Now, If you started checking factors for these primes at the beginning of the universe with a rate of about quintillion numbers a second, you’d still have to check about a billion times more digits until you would have found these potential factors. That is great if you are some sort of an eternal being since you’ve got the answer, but to us mere mortals time is a problem. The amount of possible factors grows about the same rate as the square root of the number if we aren’t using any techniques, and with that we would have to say goodbye to ever factoring these giant numbers. But that got me thinking, what other ways there are to factor these big integers?
+
+    # That brings us to the topic of this video, Quadratic Sieve. It is the second best factorization method currently known. The best method, General number sieve, is far more complex and out of the scope of this video, but Quadratic sieve doesn’t fall far behind: It is still the best algorithm for factoring numbers less than 100 digits, which is good enough for us. We hope to give you an in-depth understanding of this algorithm, so that in the end of this video you could, for example, program your own implementation of Quadratic Sieve.
+
+
     pass
+
+def OpeningCredits(self):
+    header = Text("Quadratic Sieve", font="Futura Md BT", font_size=100, color=ACCENT_COLOR).move_to(UP*0.5)
+    header_1 = Text("or", font="Futura Md BT", font_size=40, color=ACCENT_COLOR).move_to(DOWN*1.25 + LEFT*20)
+    header_2 = Text("How to factor REALLY fast", font="Futura Md BT", font_size=40, color=ACCENT_COLOR).move_to(DOWN*1.75+LEFT*50)
+    sub_header = Text("Rasse&Kimmo", font="Futura Md BT", font_size=30, color=WHITE).move_to(DOWN*3)
+
+    self.play(Write(header))
+    self.wait(1)
+    self.play(header_1.animate.move_to(DOWN*1.5), header_2.animate.move_to(DOWN*2))
+
+    self.play(Write(sub_header))
+    self.wait(3)
 
 def TrialDivisionExplanation(self):
 

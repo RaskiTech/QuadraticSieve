@@ -5,7 +5,7 @@ from tokenize import String
 from venv import create
 from wsgiref.util import guess_scheme
 from manim import *
-from numpy import full
+from numpy import full, place
 from pygments import highlight
 
 # Background color defined in manim.cfg
@@ -40,9 +40,10 @@ class CreateVideo(Scene):
     def construct(self):
         #StartExplanation(self)
         #SieveOfEratosthenesExplanation(self)
+        TrialDivisionExplanation(self)
         #FermatExplanation(self)
         #FermatExplanationExample(self)
-        KratsKritsExplanation(self)
+        #KratsKritsExplanation(self)
         #QuadraticSieveExplanation(self)
         #OptimizeExplanation(self)
         pass
@@ -51,12 +52,58 @@ class CreateVideo(Scene):
 def StartExplanation(self):
     pass
 
+def TrialDivisionExplanation(self):
+
+    header = Text("Trial Division", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
+    self.play(Create(header))
+    self.play(FadeOut(header))
+
+    example_header = Text("Example", font="Futura Md BT", font_size=40).move_to(UP*3.4)
+    text_1 = Text("N = 5063", **TEXT_ARGS_S)
+
+    self.play(Create(example_header))
+    self.play(Create(text_1))
+
+    self.play(text_1.animate.to_edge(UP + LEFT))
+
+    STEP = UP*0.7
+
+    value_1 = MathTex(r'5063/2=2531.5').move_to(UP)
+    value_2 = MathTex(r'5063/3=1687.\dot{6}').move_to(UP-STEP)
+    value_3 = MathTex(r'5063/5=1265.75').move_to(UP-2*STEP)
+    dots = MathTex(r'\dots').move_to(UP-3*STEP)
+    value_4 = MathTex(r'5063/61=83').move_to(UP-4*STEP)
+    value_4_2 = MathTex(r'5063/61=83', font_size=80)
+    value_4_3 = MathTex(r'5063=83\cdot 61', font_size=80)
+
+    self.play(Create(value_1))
+    self.play(Create(value_2))
+    self.play(Create(value_3))
+    self.play(Create(dots))
+    self.play(Create(value_4))
+
+    self.play(FadeOut(VGroup(value_1, value_2, value_3, dots, example_header, text_1)), Transform(value_4, value_4_2))
+    self.play(Transform(value_4, value_4_3))
+
+    self.play(Uncreate(value_4))
+
+    header_2 = Text("When to stop?", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
+    text_2 = MathTex(r'\sqrt{N}', font_size=80)
+
+    self.play(Create(header_2))
+    self.play(Transform(header_2, text_2))
+
+    pass
+
+
 def SieveOfEratosthenesExplanation(self):
 
     header = Text("Sieve of Eratosthenes", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
 
     self.play(Create(header))
     self.play(FadeOut(header))
+
+
 
     grid = []
 

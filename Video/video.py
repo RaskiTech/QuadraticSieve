@@ -38,7 +38,7 @@ def HideTextbox(self, textbox) -> None:
 
 class CreateVideo(Scene):
     def construct(self):
-        #StartExplanation(self)
+        StartExplanation(self)
         #SieveOfEratosthenesExplanation(self)
         #FermatExplanation(self)
         #FermatExplanationExample(self)
@@ -88,7 +88,7 @@ def StartExplanation(self):
 
     ''', font="Futura Md BT", font_size=20)
 
-    number_5 = MathTex(r'10^{300}', font="Futura Md BT", font_size=100)
+    number_5 = MathTex(r'10^{300}', font_size=100)
 
     # Well the primes of which theese keys consist arent normal primes like 2
 
@@ -335,12 +335,12 @@ def FermatExplanation(self):
     
     text_3_1 = MathTex(r'N=a\cdot b\wedge N\in\text{Odd}').move_to(UP*3)
     text_3_1_2 = MathTex(r'N=(a+b)\cdot (a-b)\wedge N\in\text{Odd}').move_to(UP*3)
-    text_3_2_1 = MathTex(r'N=(d+m)\cdot(d-m)').move_to(UP*2)
+    text_3_2_1 = MathTex(r'N=(m-d)\cdot(m-d)').move_to(UP*2)
 
-    text_3_2_2 = MathTex(r'N=d^2-m^2').move_to(text_3_2_1)
-    text_3_2_3 = MathTex(r'N+m^2=d^2').move_to(text_3_2_1)
+    text_3_2_2 = MathTex(r'N=m^2-d^2').move_to(text_3_2_1)
+    text_3_2_3 = MathTex(r'N+d^2=m^2').move_to(text_3_2_1)
 
-    text_3_2_3_2 = MathTex(r'N+m^2=d^2', font_size=60)
+    text_3_2_3_2 = MathTex(r'N+d^2=m^2', font_size=60)
 
     text_3_2_4 = MathTex(r'N+a^2=b^2', font_size=60)
 

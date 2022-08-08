@@ -39,12 +39,12 @@ def HideTextbox(self, textbox) -> None:
 class CreateVideo(Scene):
     def construct(self):
         StartExplanation(self)
-        #SieveOfEratosthenesExplanation(self)
-        #FermatExplanation(self)
-        #FermatExplanationExample(self)
-        #KratsKritsExplanation(self)
-        #QuadraticSieveExplanation(self)
-        #OptimizeExplanation(self)
+        SieveOfEratosthenesExplanation(self)
+        FermatExplanation(self)
+        FermatExplanationExample(self)
+        KratsKritsExplanation(self)
+        QuadraticSieveExplanation(self)
+        OptimizeExplanation(self)
         pass
 
 
@@ -56,16 +56,19 @@ def StartExplanation(self):
     key_image = SVGMobject('key.svg', height=4)
 
     self.play(Create(lock_image))
+    self.wait(TIME)
 
     # These numbers are used to create big semiprimes often used as keys
 
     self.play(Transform(lock_image, key_image))
+    self.wait(TIME)
     
     # But when I said big primes you might wonder how big
 
     text_1 = Text('?', font="Futura Md BT", font_size=100)
 
     self.play(Uncreate(lock_image), Create(text_1))
+    self.wait(TIME)
 
     self.play(Uncreate(text_1))
 
@@ -93,20 +96,24 @@ def StartExplanation(self):
     # Well the primes of which theese keys consist arent normal primes like 2
 
     self.play(Create(number_1))
+    self.wait(TIME)
     self.play(Transform(number_1, number_2))
+    self.wait(TIME)
     # or like 61
     self.play(Transform(number_1, number_3))
+    self.wait(TIME)
     # or even like this behemoth
     # In reality the keys look like this:
     self.play(Transform(number_1, number_4))
+    self.wait(TIME)
 
     # AND the primes that make them up are on the scale of
     self.play(Transform(number_1, number_5))
+    self.wait(TIME)
     # 10^600
 
     # well that got big really fast
 
-    self.wait(1)
     self.play(Uncreate(number_1))
 
     # Alkutekstit
@@ -115,22 +122,19 @@ def StartExplanation(self):
 
     # When I first saw these big prime numbers I thought to myself: “huh, that seems a bit extreme” and just after that “wait a minute! how on earth could anyone verify that!”. These primes are like over 600 digits long. If they had two factors of the same length they would both be 300 digits long. And you may say: “300 digits phew that doesn’t sound like much”, but think about it in this way: the universe 436,117,077,000,000,000 seconds old – that’s only a at the scale of 10^18, 18 digits, and those potential factors would be on a scale waaay bigger.
 
-    self.wait(10)
-
     TrialDivisionExplanation(self)
 
+    self.wait(TIME)
     # Now, If you started checking factors for these primes at the beginning of the universe with a rate of about quintillion numbers a second, you’d still have to check about a billion times more digits until you would have found these potential factors. That is great if you are some sort of an eternal being since you’ve got the answer, but to us mere mortals time is a problem. The amount of possible factors grows about the same rate as the square root of the number if we aren’t using any techniques, and with that we would have to say goodbye to ever factoring these giant numbers. But that got me thinking, what other ways there are to factor these big integers?
 
     # That brings us to the topic of this video, Quadratic Sieve. It is the second best factorization method currently known. The best method, General number sieve, is far more complex and out of the scope of this video, but Quadratic sieve doesn’t fall far behind: It is still the best algorithm for factoring numbers less than 100 digits, which is good enough for us. We hope to give you an in-depth understanding of this algorithm, so that in the end of this video you could, for example, program your own implementation of Quadratic Sieve.
 
 
-    pass
-
 def OpeningCredits(self):
     header = Text("Quadratic Sieve", font="Futura Md BT", font_size=100, color=ACCENT_COLOR).move_to(UP*0.5)
     header_1 = Text("or", font="Futura Md BT", font_size=40, color=ACCENT_COLOR).move_to(DOWN*1.25 + LEFT*20)
     header_2 = Text("How to factor REALLY fast", font="Futura Md BT", font_size=40, color=ACCENT_COLOR).move_to(DOWN*1.75+LEFT*50)
-    sub_header = Text("Rasse&Kimmo", font="Futura Md BT", font_size=30, color=WHITE).move_to(DOWN*3)
+    sub_header = Text("Rasse & Kimmo", font="Futura Md BT", font_size=30, color=WHITE).move_to(DOWN*3)
 
     self.play(Write(header))
     self.wait(1)
@@ -139,17 +143,22 @@ def OpeningCredits(self):
     self.play(Write(sub_header))
     self.wait(3)
 
+    self.play(FadeOut(header), FadeOut(header_1), FadeOut(header_2), FadeOut(sub_header))
+
 def TrialDivisionExplanation(self):
 
     header = Text("Trial Division", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
     self.play(Create(header))
+    self.wait(TIME)
     self.play(FadeOut(header))
 
     example_header = Text("Example", font="Futura Md BT", font_size=40).move_to(UP*3.4)
     text_1 = Text("N = 5063", **TEXT_ARGS_S)
 
     self.play(Create(example_header))
+    self.wait(TIME)
     self.play(Create(text_1))
+    self.wait(TIME)
 
     self.play(text_1.animate.to_edge(UP + LEFT))
 
@@ -164,23 +173,31 @@ def TrialDivisionExplanation(self):
     value_4_3 = MathTex(r'5063=83\cdot 61', font_size=80)
 
     self.play(Create(value_1))
+    self.wait(TIME)
     self.play(Create(value_2))
+    self.wait(TIME)
     self.play(Create(value_3))
+    self.wait(TIME)
     self.play(Create(dots))
+    self.wait(TIME)
     self.play(Create(value_4))
+    self.wait(TIME)
 
     self.play(FadeOut(VGroup(value_1, value_2, value_3, dots, example_header, text_1)), Transform(value_4, value_4_2))
     self.play(Transform(value_4, value_4_3))
+    self.wait(TIME)
 
     self.play(Uncreate(value_4))
 
     header_2 = Text("When to stop?", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
-    text_2 = MathTex(r'\sqrt{N}', font_size=80)
+    text_2 = MathTex(r'\sqrt{N}', font_size=80).next_to(header_2, DOWN, 0.5)
 
     self.play(Create(header_2))
-    self.play(Transform(header_2, text_2))
+    self.wait(TIME)
+    self.play(Create(text_2))
+    self.wait(TIME)
 
-    pass
+    self.play(FadeOut(text_2), FadeOut(header_2))
 
 
 def SieveOfEratosthenesExplanation(self):
@@ -188,6 +205,7 @@ def SieveOfEratosthenesExplanation(self):
     header = Text("Sieve of Eratosthenes", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
 
     self.play(Create(header))
+    self.wait(TIME)
     self.play(FadeOut(header))
 
 
@@ -210,6 +228,7 @@ def SieveOfEratosthenesExplanation(self):
         grid_group += VGroup(*row)
 
     self.play(Create(grid_group))
+    self.wait(TIME)
 
     all_crosses = VGroup()
 
@@ -254,16 +273,19 @@ def SieveOfEratosthenesExplanation(self):
     
     self.bring_to_front(prime_cells)
     self.play(prime_cells.animate.set_color(ACCENT_COLOR))
+    self.wait(TIME)
 
     self.play(FadeOut(grid_group), FadeOut(all_crosses))
 
     text_1 = MathTex(r'N', font_size=60, color=ACCENT_COLOR)
-    text_2 = MathTex(r'\sqrt{N}', font_size=60, color=ACCENT_COLOR).next_to(text_1, DOWN)
+    text_2 = MathTex(r'\sqrt{N}', font_size=60, color=ACCENT_COLOR).next_to(text_1, DOWN, buff=0.5)
 
     self.play(Create(text_1))
+    self.wait(TIME)
     self.play(Create(text_2))
+    self.wait(TIME)
 
-    self.play(FadeOut(VGroup(*self.mobjects)))
+    self.play( *[FadeOut(mob)for mob in self.mobjects] )
 
 
 def FermatExplanation(self):
@@ -273,6 +295,7 @@ def FermatExplanation(self):
     header = Text("Fermat's Factorization", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
 
     self.play(Create(header))
+    self.wait(TIME)
     self.play(FadeOut(header))
 
     # Have you ever tried factoring even integers and didn't find any factors? – No?
@@ -283,6 +306,7 @@ def FermatExplanation(self):
     numbers_group = VGroup(*[number_1, number_2, number_3])
 
     self.play(Create(numbers_group))
+    self.wait(TIME)
     self.play(FadeOut(numbers_group))
 
     # Well if you have any brain capacity you’d spot the obvious factor, namely 2.
@@ -290,21 +314,24 @@ def FermatExplanation(self):
     text_1 = Text("2", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
 
     self.play(Create(text_1))
+    self.wait(TIME)
     self.play(FadeOut(text_1))
 
     # That said, finding 2 and its powers is for us humans quite trivial. And It turns out it’s really trivial for computers too.
 
     self.play(Create(numbers_group))
+    self.wait(TIME)
 
     self.play(
         Transform(number_1, MathTex(r'3\cdot2', font_size=60, color=ACCENT_COLOR).move_to(3*LEFT) ),
         Transform(number_2, MathTex(r'13\cdot2', font_size=60, color=ACCENT_COLOR) ),
         Transform(number_3, MathTex(r'384\cdot2', font_size=60, color=ACCENT_COLOR).move_to(3*RIGHT) )
         )
+    self.wait(TIME)
     self.play(
         Transform(number_3, MathTex(r'3\cdot2^8', font_size=60, color=ACCENT_COLOR).move_to(3*RIGHT) )
         )
-    self.wait(2)
+    self.wait(TIME)
 
     self.play(FadeOut(numbers_group))
 
@@ -318,6 +345,7 @@ def FermatExplanation(self):
     text_2 = VGroup(text_2_1, text_2_2)
 
     self.play(Create(text_2))
+    self.wait(TIME)
 
     self.play(Uncreate(text_2))
 
@@ -331,7 +359,9 @@ def FermatExplanation(self):
     Mid = Dot((RIGHT*3+LEFT*5)/2, radius= DEFAULT_DOT_RADIUS*2)
 
     self.play(Create(Odd_1),Create(Odd_2))
+    self.wait(TIME)
     self.play(Create(Mid))
+    self.wait(TIME)
     
     text_3_1 = MathTex(r'N=a\cdot b\wedge N\in\text{Odd}').move_to(UP*3)
     text_3_1_2 = MathTex(r'N=(a+b)\cdot (a-b)\wedge N\in\text{Odd}').move_to(UP*3)
@@ -345,17 +375,23 @@ def FermatExplanation(self):
     text_3_2_4 = MathTex(r'N+a^2=b^2', font_size=60)
 
     self.play(Create(text_3_1), Create(text_3_2_1))
+    self.wait(TIME)
     self.play(Transform(text_3_2_1, text_3_2_2))
+    self.wait(TIME)
     self.play(Transform(text_3_2_1, text_3_2_3))
+    self.wait(TIME)
 
     self.play(Uncreate(VGroup(Odd_1, Odd_2, Mid, numline)))
 
     self.play(Transform(text_3_2_1, text_3_2_3_2))
+    self.wait(TIME)
 
     self.play(Transform(text_3_2_1, text_3_2_4))
+    self.wait(TIME)
     self.play(Transform(text_3_1, text_3_1_2))
+    self.wait(TIME)
 
-    #self.play(FadeOut(VGroup(*self.mobjects)))
+    self.play(FadeOut(text_3_1), FadeOut(text_3_2_1))
 
 
 def FermatExplanationExample(self):
@@ -366,9 +402,12 @@ def FermatExplanationExample(self):
     text_1 = Text("N = 5063", **TEXT_ARGS_S)
 
     self.play(Create(example_header))
+    self.wait(TIME)
     self.play(Create(text_1))
+    self.wait(TIME)
 
     self.play(text_1.animate.to_edge(UP + LEFT))
+    self.wait(TIME)
 
     STEP = UP*0.7
     
@@ -384,37 +423,52 @@ def FermatExplanationExample(self):
     value_4_6 = MathTex(r'5063=83\cdot 61', font_size = 80)
 
     self.play(Create(value_1))
+    self.wait(TIME)
     self.play(Create(value_2))
+    self.wait(TIME)
     self.play(Create(value_3))
+    self.wait(TIME)
 
     self.play(Create(dots))
+    self.wait(TIME)
 
     self.play(Create(value_4))
+    self.wait(TIME)
     self.play(Transform(value_4, value_4_2))
+    self.wait(TIME)
 
     self.play(FadeOut(VGroup(value_1, value_2, value_3, dots)), Transform(value_4, value_4_3))
+    self.wait(TIME)
     self.play(Transform(value_4, value_4_4))
+    self.wait(TIME)
     self.play(Transform(value_4, value_4_5))
+    self.wait(TIME)
     self.play(Transform(value_4, value_4_6))
-    pass
+    self.wait(TIME)
+    self.play(*[FadeOut(mob)for mob in self.mobjects])
 
 def KratsKritsExplanation(self):
 
-    header = Text("KratsKrits's Factorization", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
+    header = Text("Kraitchik's Factorization", font="Futura Md BT", font_size=60, color=ACCENT_COLOR)
 
     self.play(Create(header))
+    self.wait(TIME)
     self.play(FadeOut(header))
 
     text_1 = MathTex(r'N=n_1\cdot n_2', font_size=60)
     text_1_2 = MathTex(r'kN=k\cdot n_1\cdot n_2', font_size=60)
     text_1_3 = MathTex(r'=(a+b)\cdot (a-b)', font_size=60).move_to(DOWN)
-    text_1_4 = MathTex(r'gdc(N)', font_size=60).move_to(RIGHT*3+UP)
+    text_1_4 = MathTex(r'gdc(N, a+b)', font_size=60).move_to(RIGHT*3+UP)
 
     self.play(Create(text_1))
+    self.wait(TIME)
     self.play(Transform(text_1, text_1_2))
+    self.wait(TIME)
     self.play(Create(text_1_3))
+    self.wait(TIME)
     self.remove(text_1)
     self.play(text_1_2.animate.move_to(RIGHT*3), text_1_3.animate.move_to(RIGHT*3+DOWN))
+    self.wait(TIME)
 
     table_h_1 = MathTex(r'a+b', font_size=60).move_to(LEFT*5 + UP*2.5)
     table_h_2 = MathTex(r'a-b', font_size=60).move_to(LEFT*3 + UP*2.5)
@@ -437,20 +491,26 @@ def KratsKritsExplanation(self):
 
     self.play(Create(table_separators))
     self.play(Create(table_h_1), Create(table_h_2))
+    self.wait(TIME)
 
     self.play(Create(table_r_1_1))
     self.play(Create(table_r_1_2))
+    self.wait(TIME)
 
     self.play(Create(table_r_2_1))
     self.play(Create(table_r_2_2))
+    self.wait(TIME)
 
     self.play(Create(table_r_3_1))
     self.play(Create(table_r_3_2))
+    self.wait(TIME)
 
     self.play(Create(table_r_4_1))
     self.play(Create(table_r_4_2))
+    self.wait(TIME)
 
     self.play(Create(text_1_4))
+    self.wait(TIME)
 
     self.play(
         Transform( table_r_1_1, MathTex(r'n_1', font_size=40).move_to(LEFT*5 + UP*1.5) ),
@@ -458,17 +518,23 @@ def KratsKritsExplanation(self):
         Transform( table_r_3_1, MathTex(r'k', font_size=40).move_to(LEFT*5 + DOWN*0.5) ),
         Transform( table_r_3_2, MathTex(r'N', font_size=40).move_to(LEFT*3 + DOWN*0.5) )
     )
+    self.wait(TIME)
 
     correct = Rectangle(height=2, width=4, stroke_color = GREEN).move_to(LEFT*4+UP)
     self.play(Create(correct), Create(Cross(table_r_3_1)), Create(Cross(table_r_3_2)))
+    self.wait(TIME)
 
-    self.play(FadeOut(VGroup(*self.mobjects)))
+    self.play( *[FadeOut(mob)for mob in self.mobjects] )
 
     text_2 = MathTex(r'N+a^2=b^2', font_size=60)
     text_2_2 = MathTex(r'a^2\equiv b^2\ (\text{mod}\ N)', font_size=60)
 
     self.play(Create(text_2))
+    self.wait(TIME)
     self.play(Transform(text_2, text_2_2))
+    self.wait(TIME)
+
+    self.play(FadeOut(text_2))
 
     pass
 

@@ -38,7 +38,7 @@ def HideTextbox(self, textbox) -> None:
 
 class CreateVideo(Scene):
     def construct(self):
-        #StartExplanation(self)
+        StartExplanation(self)
         #FermatExplanation(self)
         #FermatExplanationExample(self)
         #KratsKritsExplanation(self)
@@ -90,7 +90,7 @@ def StartExplanation(self):
 
     ''', font="Futura Md BT", font_size=20)
 
-    number_5 = MathTex(r'10^{300}', font_size=100)
+    number_5 = MathTex(r'10^{600}', font_size=100)
 
     # Well the primes of which theese keys consist arent normal primes like 2
 

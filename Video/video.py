@@ -38,13 +38,12 @@ def HideTextbox(self, textbox) -> None:
 
 class CreateVideo(Scene):
     def construct(self):
-        StartExplanation(self)
-        SieveOfEratosthenesExplanation(self)
-        FermatExplanation(self)
-        FermatExplanationExample(self)
-        KratsKritsExplanation(self)
-        QuadraticSieveExplanation(self)
-        OptimizeExplanation(self)
+        #StartExplanation(self)
+        #FermatExplanation(self)
+        #FermatExplanationExample(self)
+        #KratsKritsExplanation(self)
+        #QuadraticSieveExplanation(self)
+        #OptimizeExplanation(self)
         pass
 
 
@@ -412,8 +411,11 @@ def FermatExplanationExample(self):
     STEP = UP*0.7
     
     value_1 = MathTex(r'5063+1^2=5064').move_to(UP)
+    cross_1 = Cross(scale_factor=0.2).next_to(value_1, RIGHT)
     value_2 = MathTex(r'5063+2^2=5067').move_to(UP-STEP)
+    cross_2 = Cross(scale_factor=0.2).next_to(value_2, RIGHT)
     value_3 = MathTex(r'5063+3^2=5072').move_to(UP-2*STEP)
+    cross_3 = Cross(scale_factor=0.2).next_to(value_3, RIGHT)
     dots = MathTex(r'\dots').move_to(UP-3*STEP)
     value_4 = MathTex(r'5063+11^2=5184').move_to(UP-4*STEP)
     value_4_2 = MathTex(r'5063+11^2=72^2').move_to(UP-4*STEP)
@@ -423,10 +425,13 @@ def FermatExplanationExample(self):
     value_4_6 = MathTex(r'5063=83\cdot 61', font_size = 80)
 
     self.play(Create(value_1))
+    self.play(Create(cross_1))
     self.wait(TIME)
     self.play(Create(value_2))
+    self.play(Create(cross_2))
     self.wait(TIME)
     self.play(Create(value_3))
+    self.play(Create(cross_3))
     self.wait(TIME)
 
     self.play(Create(dots))
@@ -437,7 +442,7 @@ def FermatExplanationExample(self):
     self.play(Transform(value_4, value_4_2))
     self.wait(TIME)
 
-    self.play(FadeOut(VGroup(value_1, value_2, value_3, dots)), Transform(value_4, value_4_3))
+    self.play(FadeOut(VGroup(value_1, value_2, value_3, dots, cross_1, cross_2, cross_3)), Transform(value_4, value_4_3))
     self.wait(TIME)
     self.play(Transform(value_4, value_4_4))
     self.wait(TIME)
@@ -458,7 +463,7 @@ def KratsKritsExplanation(self):
     text_1 = MathTex(r'N=n_1\cdot n_2', font_size=60)
     text_1_2 = MathTex(r'kN=k\cdot n_1\cdot n_2', font_size=60)
     text_1_3 = MathTex(r'=(a+b)\cdot (a-b)', font_size=60).move_to(DOWN)
-    text_1_4 = MathTex(r'gdc(N, a+b)', font_size=60).move_to(RIGHT*3+UP)
+    text_1_4 = MathTex(r'gcd(N, a+b)', font_size=60).move_to(RIGHT*3+UP)
 
     self.play(Create(text_1))
     self.wait(TIME)
@@ -515,7 +520,7 @@ def KratsKritsExplanation(self):
     self.play(
         Transform( table_r_1_1, MathTex(r'n_1', font_size=40).move_to(LEFT*5 + UP*1.5) ),
         Transform( table_r_2_1, MathTex(r'n_2', font_size=40).move_to(LEFT*5 + UP*0.5) ),
-        Transform( table_r_3_1, MathTex(r'k', font_size=40).move_to(LEFT*5 + DOWN*0.5) ),
+        Transform( table_r_3_1, MathTex(r'1', font_size=40).move_to(LEFT*5 + DOWN*0.5) ),
         Transform( table_r_3_2, MathTex(r'N', font_size=40).move_to(LEFT*3 + DOWN*0.5) )
     )
     self.wait(TIME)
@@ -527,9 +532,12 @@ def KratsKritsExplanation(self):
     self.play( *[FadeOut(mob)for mob in self.mobjects] )
 
     text_2 = MathTex(r'N+a^2=b^2', font_size=60)
+    text_2_1 = MathTex(r'k\cdotN+a^2=b^2', font_size=60)
     text_2_2 = MathTex(r'a^2\equiv b^2\ (\text{mod}\ N)', font_size=60)
 
     self.play(Create(text_2))
+    self.wait(TIME)
+    self.play(Transform(text_2, text_2_1))
     self.wait(TIME)
     self.play(Transform(text_2, text_2_2))
     self.wait(TIME)
